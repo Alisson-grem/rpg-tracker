@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d0d12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mestre do Combate - RPG</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="ambient-light light-red"></div>
+    <div class="ambient-light light-gold"></div>
+
+    <header class="app-header">
+        <h1>🐉 Mestre do Combate</h1>
+        <p class="subtitle">Gerenciador de Batalha Épica</p>
+        <!-- BOTÃO DE INSTALAR (Escondido por padrão, a magia do JS revela) -->
+        <button id="install-app-btn" class="btn-primary install-header-btn" style="display: none;">📥 Instalar Aplicativo</button>
+    </header>
+
+    <div class="app-container">
+        
+        <div class="forge-panel">
+            <h3>Convocar Combatente</h3>
+            
+            <div class="faction-selector">
+                <input type="radio" name="faction" id="fac-hero" value="hero">
+                <label for="fac-hero" class="fac-btn">🛡️ Herói</label>
+                
+                <input type="radio" name="faction" id="fac-villain" value="villain" checked>
+                <label for="fac-villain" class="fac-btn">💀 Vilão</label>
+                
+                <input type="radio" name="faction" id="fac-neutral" value="neutral">
+                <label for="fac-neutral" class="fac-btn">⚖️ Neutro</label>
+            </div>
+
+            <div class="input-row">
+                <input type="text" id="char-name" placeholder="Nome (Ex: Dragão Ancião)" class="rpg-input">
+            </div>
+            <!-- Divisão que se adapta no celular -->
+            <div class="input-row split responsive-split">
+                <input type="number" id="char-qtd" placeholder="Qtd" value="1" min="1" class="rpg-input" title="Quantidade">
+                <input type="number" id="char-hp" placeholder="HP Max" class="rpg-input">
+                <input type="number" id="char-init" placeholder="Inic/Mod" class="rpg-input" title="Iniciativa (Ou Bônus)">
+            </div>
+            <button id="add-btn" class="btn-primary">⚔️ Rolar Iniciativa</button>
+        </div>
+
+        <div class="combat-controls">
+            <div>
+                <h2>Campo de Batalha</h2>
+                <span id="round-counter" class="round-badge">Rodada 1</span>
+            </div>
+            <div class="combat-actions">
+                <button id="open-encounters-btn" class="btn-secondary mini-action-btn" title="Grimório de Encontros">📜</button>
+                <button id="next-turn-btn" class="btn-primary mini-action-btn" title="Avançar Turno">▶ Próx</button>
+                <button id="reset-combat-btn" class="btn-secondary mini-action-btn" title="Reiniciar Batalha">🔄</button>
+                <button id="clear-btn" class="btn-danger mini-action-btn" title="Dizimar Todos">☠️</button>
+            </div>
+        </div>
+
+        <div id="combat-list" class="combat-list">
+            <!-- Os personagens entram aqui via JavaScript -->
+        </div>
+
+    </div>
+
+    <!-- BOTÕES FLUTUANTES -->
+    <button class="dice-float-btn" id="open-dice-modal" title="Bandeja de Ossos">🎲</button>
+    <button class="pix-float-btn" id="open-pix-modal">🪙 Baú</button>
+
+    <!-- Modal do Rolador de Dados -->
+    <div class="modal-overlay" id="dice-modal">
+        <div class="modal-content forge-panel">
+            <h2 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">Bandeja de Ossos</h2>
+            
+            <div class="dice-display-box">
+                <span id="dice-result">--</span>
+                <span id="dice-detail">Role seu destino...</span>
+            </div>
+
+            <div class="input-row">
+                <input type="number" id="dice-mod" placeholder="Modificador (Ex: +2)" class="rpg-input" style="text-align: center; font-weight: bold;">
+            </div>
+
+            <div class="dice-grid">
+                <button class="dice-btn" onclick="rolarDado(4)">D4</button>
+                <button class="dice-btn" onclick="rolarDado(6)">D6</button>
+                <button class="dice-btn" onclick="rolarDado(8)">D8</button>
+                <button class="dice-btn" onclick="rolarDado(10)">D10</button>
+                <button class="dice-btn" onclick="rolarDado(12)">D12</button>
+                <button class="dice-btn" onclick="rolarDado(20)">D20</button>
+            </div>
+
+            <button class="btn-secondary" id="close-dice-modal" style="margin-top: 20px;">Guardar Dados</button>
+        </div>
+    </div>
+
+    <!-- Modal do Grimório de Encontros -->
+    <div class="modal-overlay" id="encounters-modal">
+        <div class="modal-content forge-panel">
+            <h2 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">📜 Grimório</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 0;">Salve o campo atual ou invoque emboscadas.</p>
+
+            <div class="input-row split" style="margin-top: 15px;">
+                <input type="text" id="encounter-name" placeholder="Nome da Batalha" class="rpg-input" style="font-size: 14px;">
+                <button class="btn-primary" id="save-encounter-btn" style="max-width: 90px; padding: 10px; font-size: 14px;">💾 Salvar</button>
+            </div>
+
+            <div id="encounters-list" class="encounters-list"></div>
+
+            <button class="btn-secondary" id="close-encounters-modal" style="margin-top: 20px;">Fechar Grimório</button>
+        </div>
+    </div>
+
+    <!-- Modal do Pix -->
+    <div class="modal-overlay" id="pix-modal">
+        <div class="modal-content forge-panel">
+            <h2 style="color: var(--gold); font-family: 'Cinzel', serif;">🍻 Pague uma Cerveja!</h2>
+            <p style="color: var(--text-muted);">Se esse app salvou a sua mesa de RPG, doe moedas de ouro para a guilda do desenvolvedor!</p>
+            <div class="pix-box">
+                <p style="margin-top: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Chave Mágica (Pix):</p>
+                <p class="pix-key" id="minha-chave-pix">seu-email-ou-chave-aqui@gmail.com</p>
+                <button class="btn-primary" id="copy-pix-btn" style="margin-top: 15px;">📋 Copiar Feitiço</button>
+            </div>
+            <button class="btn-secondary" id="close-pix-modal" style="margin-top: 20px;">Fechar Baú</button>
+        </div>
+    </div>
+
+    <!-- Modal de Status -->
+    <div class="modal-overlay" id="status-modal">
+        <div class="modal-content forge-panel">
+            <h2 id="status-char-name" style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">Alvo</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 0; font-weight: bold; text-transform: uppercase;">Aplique Condições</p>
+            <div class="status-grid">
+                <button class="status-toggle-btn" data-status="poison">🤢 Veneno</button>
+                <button class="status-toggle-btn" data-status="burn">🔥 Fogo</button>
+                <button class="status-toggle-btn" data-status="stun">⚡ Atordoado</button>
+                <button class="status-toggle-btn" data-status="shield">🛡️ Escudo</button>
+                <button class="status-toggle-btn" data-status="invisible">👻 Invisível</button>
+            </div>
+            <button class="btn-primary" id="close-status-modal" style="margin-top: 20px;">Concluído</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
