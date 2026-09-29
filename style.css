@@ -7,77 +7,47 @@
 
 /* TEMA 1: D&D / Masmorra Clássica (Padrão) */
 :root, body[data-theme="fantasy"] {
-    --bg-color: #0a0a0e; 
-    --panel-bg: #15151a; 
-    --border-dark: #27272a;
-    --primary: #991b1b; 
-    --primary-glow: #ef4444;
+    --bg-color: #0a0a0e; --panel-bg: #15151a; --border-dark: #27272a;
+    --primary: #991b1b; --primary-glow: #ef4444;
     --primary-btn-bg: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
-    --heal: #166534; 
-    --heal-btn-bg: linear-gradient(180deg, #166534 0%, #14532d 100%);
-    --text-main: #f4f4f5; 
-    --text-muted: #a1a1aa;
-    --gold: #fbbf24; 
-    --gold-glow: rgba(251, 191, 36, 0.4);
-    --font-rpg: 'Cinzel', serif; 
-    --font-ui: 'Inter', sans-serif;
-    --border-style: solid;
-    --panel-radius: 20px;
-    --card-radius: 16px;
-    --bg-img: radial-gradient(circle at 50% 0%, rgba(20, 20, 30, 1) 0%, rgba(10, 10, 14, 1) 100%),
-              url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    --heal: #166534; --heal-btn-bg: linear-gradient(180deg, #166534 0%, #14532d 100%);
+    --text-main: #f4f4f5; --text-muted: #a1a1aa;
+    --gold: #fbbf24; --gold-glow: rgba(251, 191, 36, 0.4);
+    --font-rpg: 'Cinzel', serif; --font-ui: 'Inter', sans-serif;
+    --border-style: solid; --panel-radius: 20px; --card-radius: 16px;
+    --bg-img: radial-gradient(circle at 50% 0%, rgba(20, 20, 30, 1) 0%, rgba(10, 10, 14, 1) 100%), url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 /* TEMA 2: Ordem Paranormal / Ocultismo */
 body[data-theme="paranormal"] {
-    --bg-color: #050505; 
-    --panel-bg: #0d0d0d; 
-    --border-dark: #333333;
-    --primary: #dc2626; 
-    --primary-glow: #ff0000;
+    --bg-color: #050505; --panel-bg: #0d0d0d; --border-dark: #333333;
+    --primary: #dc2626; --primary-glow: #ff0000;
     --primary-btn-bg: #1a0000;
-    --heal: #d4d4d8; 
-    --heal-btn-bg: #27272a;
-    --text-main: #f3f4f6; 
-    --text-muted: #6b7280;
-    --gold: #ffffff; 
-    --gold-glow: rgba(255, 255, 255, 0.5);
-    --font-rpg: 'Special Elite', cursive; 
-    --font-ui: 'Special Elite', cursive;
-    --border-style: solid;
-    --panel-radius: 0px; /* Caixas quadradas dão ar mais de arquivo */
-    --card-radius: 0px;
+    --heal: #d4d4d8; --heal-btn-bg: #27272a;
+    --text-main: #f3f4f6; --text-muted: #6b7280;
+    --gold: #ffffff; --gold-glow: rgba(255, 255, 255, 0.5);
+    --font-rpg: 'Special Elite', cursive; --font-ui: 'Special Elite', cursive;
+    --border-style: solid; --panel-radius: 0px; --card-radius: 0px;
     --bg-img: radial-gradient(circle at 50% 50%, rgba(20, 0, 0, 0.4) 0%, rgba(0, 0, 0, 1) 100%);
 }
-body[data-theme="paranormal"] .ambient-light { display: none; } /* Apaga luzes coloridas pro terror */
+body[data-theme="paranormal"] .ambient-light { display: none; } 
 
 /* TEMA 3: Fallout / Cyberpunk / Terminal */
 body[data-theme="fallout"] {
-    --bg-color: #021002; 
-    --panel-bg: #052005; 
-    --border-dark: #166534;
-    --primary: #22c55e; 
-    --primary-glow: #4ade80;
+    --bg-color: #021002; --panel-bg: #052005; --border-dark: #166534;
+    --primary: #22c55e; --primary-glow: #4ade80;
     --primary-btn-bg: #064e3b;
-    --heal: #22c55e; 
-    --heal-btn-bg: #064e3b;
-    --text-main: #4ade80; 
-    --text-muted: #22c55e;
-    --gold: #4ade80; 
-    --gold-glow: rgba(74, 222, 128, 0.6);
-    --font-rpg: 'VT323', monospace; 
-    --font-ui: 'VT323', monospace;
-    --border-style: dashed;
-    --panel-radius: 4px;
-    --card-radius: 4px;
+    --heal: #22c55e; --heal-btn-bg: #064e3b;
+    --text-main: #4ade80; --text-muted: #22c55e;
+    --gold: #4ade80; --gold-glow: rgba(74, 222, 128, 0.6);
+    --font-rpg: 'VT323', monospace; --font-ui: 'VT323', monospace;
+    --border-style: dashed; --panel-radius: 4px; --card-radius: 4px;
     --bg-img: none;
 }
-/* Efeito de TV Antiga para o Fallout */
 body[data-theme="fallout"] .crt-scanlines {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 3px 100%;
-    z-index: 9999; pointer-events: none; opacity: 0.8;
+    background-size: 100% 4px, 3px 100%; z-index: 9999; pointer-events: none; opacity: 0.8;
 }
 body[data-theme="fallout"] * { text-shadow: 0 0 5px rgba(74, 222, 128, 0.5); }
 body[data-theme="fallout"] .ambient-light { display: none; }
@@ -101,14 +71,10 @@ body {
    HEADERS E FOOTERS INTELIGENTES
    ========================================= */
 
-/* Header Desktop (PC) */
 .desktop-header {
-    display: none; /* Esconde no mobile, mostra no PC */
-    width: 100%; position: sticky; top: 0; z-index: 1000;
-    padding: 15px 30px; box-sizing: border-box;
-    justify-content: space-between; align-items: center;
-    border-radius: 0 0 var(--panel-radius) var(--panel-radius);
-    border-top: none; margin-bottom: 20px;
+    display: none; width: 100%; position: sticky; top: 0; z-index: 1000;
+    padding: 15px 30px; box-sizing: border-box; justify-content: space-between; align-items: center;
+    border-radius: 0 0 var(--panel-radius) var(--panel-radius); border-top: none; margin-bottom: 20px;
 }
 .desktop-header .header-logo h1 { font-family: var(--font-rpg); font-size: 28px; margin: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
 .header-nav { display: flex; gap: 15px; }
@@ -120,7 +86,6 @@ body {
 .nav-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); color: var(--gold); }
 .nav-btn:active { transform: scale(0.95); }
 
-/* Header Mobile */
 .mobile-header {
     width: 100%; text-align: center; padding: 25px 20px 20px;
     background: linear-gradient(180deg, rgba(5,5,8,0.9) 0%, rgba(5,5,8,0) 100%);
@@ -135,24 +100,25 @@ body {
     cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); animation: pulsePoison 2s infinite; transition: transform 0.2s;
 }
 
-/* Footer Mobile */
+/* FOOTER MOBILE ENCOLHIDO DA SIPAH! */
 .mobile-footer {
     display: flex; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1000;
-    justify-content: space-around; padding: 10px 5px; box-sizing: border-box;
+    justify-content: space-around; padding: 8px 5px; box-sizing: border-box;
     border-radius: var(--panel-radius) var(--panel-radius) 0 0;
-    border-bottom: none; padding-bottom: env(safe-area-inset-bottom, 15px);
+    border-top: 1px var(--border-style) var(--border-dark);
+    background: var(--panel-bg); box-shadow: 0 -10px 25px rgba(0,0,0,0.6);
+    padding-bottom: env(safe-area-inset-bottom, 12px);
 }
 .nav-btn-mobile {
     background: transparent; border: none; color: var(--text-muted);
-    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
     cursor: pointer; transition: 0.2s; padding: 5px; flex: 1;
 }
-.nav-btn-mobile .icon { font-size: 22px; filter: grayscale(1); }
-.nav-btn-mobile .label { font-size: 11px; font-family: var(--font-ui); font-weight: bold; }
+.nav-btn-mobile .icon { font-size: 20px; filter: grayscale(1); margin-bottom: 2px;}
+.nav-btn-mobile .label { font-size: 10px; font-family: var(--font-ui); font-weight: bold; }
 .nav-btn-mobile:active { transform: scale(0.9); }
 .nav-btn-mobile:hover .icon, .nav-btn-mobile:active .icon { filter: grayscale(0); }
 .nav-btn-mobile:hover .label, .nav-btn-mobile:active .label { color: var(--gold); }
-
 
 /* =========================================
    CONTAINERS E PAINEIS
@@ -162,8 +128,7 @@ body {
 
 .forge-panel { 
     background: var(--panel-bg); border: 1px var(--border-style) var(--border-dark); 
-    border-top: 1px var(--border-style) rgba(255,255,255,0.08); 
-    border-radius: var(--panel-radius); padding: 25px; 
+    border-top: 1px var(--border-style) rgba(255,255,255,0.08); border-radius: var(--panel-radius); padding: 25px; 
     box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.02); 
 }
 .modal-title { margin-top: 0; margin-bottom: 5px; font-size: 22px; font-family: var(--font-rpg); color: var(--gold); }
@@ -216,7 +181,6 @@ body {
 .heal-anim { animation: flashHeal 0.5s ease-out both; }
 @keyframes shakeDamage { 10%, 90% { transform: translate3d(-2px, 0, 0); } 20%, 80% { transform: translate3d(4px, 0, 0); box-shadow: 0 0 20px var(--primary-glow); } 30%, 50%, 70% { transform: translate3d(-6px, 0, 0); } 40%, 60% { transform: translate3d(6px, 0, 0); } }
 @keyframes flashHeal { 0%, 100% { box-shadow: inset 0 0 0px rgba(34, 197, 94, 0); } 50% { box-shadow: inset 0 0 40px var(--heal-glow); } }
-
 .hp-bar-bg { position: absolute; top: 0; left: 0; height: 100%; width: 100%; background: linear-gradient(90deg, rgba(153, 27, 27, 0.2) 0%, rgba(220, 38, 38, 0.2) 100%); z-index: 0; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: left; border-radius: calc(var(--card-radius) - 2px);}
 
 .char-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 1; margin-bottom: 12px;}
@@ -343,7 +307,8 @@ body {
 
 /* Celulares e Telas Pequenas */
 @media screen and (max-width: 649px) {
-    .app-container { padding: 15px; padding-bottom: 110px; /* Espaço pro footer mobile */ }
+    /* Diminuiu o padding do footer da Sipah! */
+    .app-container { padding: 15px; padding-bottom: 80px; }
     
     .responsive-split { flex-wrap: wrap; }
     #char-qtd { max-width: 100% !important; flex: 1 1 20%; }

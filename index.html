@@ -14,9 +14,9 @@
     <!-- Efeitos de Fundo -->
     <div class="ambient-light light-red"></div>
     <div class="ambient-light light-gold"></div>
-    <div class="crt-scanlines"></div> <!-- Magia pro tema Fallout -->
+    <div class="crt-scanlines"></div> 
 
-    <!-- HEADER PC (Inteligente) -->
+    <!-- HEADER PC -->
     <header class="desktop-header forge-panel">
         <div class="header-logo">
             <h1>🐉 Mestre do Combate</h1>
@@ -80,8 +80,8 @@
 
     </div>
 
-    <!-- FOOTER MOBILE (Inteligente) -->
-    <footer class="mobile-footer forge-panel">
+    <!-- FOOTER MOBILE (Agora é Slim e Inteligente!) -->
+    <footer class="mobile-footer">
         <button class="nav-btn-mobile open-encounters-btn">
             <span class="icon">📜</span>
             <span class="label">Batalhas</span>
@@ -95,15 +95,13 @@
             <span class="label">Temas</span>
         </button>
         <button class="nav-btn-mobile open-pix-btn">
-            <span class="icon">🪙</span>
+            <span class="icon">👍</span>
             <span class="label">Apoiar</span>
         </button>
     </footer>
 
-
     <!-- ================= MODAIS DA SIPAH ================= -->
 
-    <!-- Modal de Temas do Multiverso -->
     <div class="modal-overlay" id="theme-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">🎨 Multiverso RPG</h2>
@@ -117,7 +115,6 @@
                         <span>Ouro, sangue e fantasia medieval (D&D)</span>
                     </div>
                 </button>
-                
                 <button class="theme-select-btn" data-settheme="paranormal">
                     <span class="theme-icon">👁️</span>
                     <div class="theme-info">
@@ -125,7 +122,6 @@
                         <span>Preto, branco e terror (Ordem Paranormal)</span>
                     </div>
                 </button>
-                
                 <button class="theme-select-btn" data-settheme="fallout">
                     <span class="theme-icon">☢️</span>
                     <div class="theme-info">
@@ -134,12 +130,10 @@
                     </div>
                 </button>
             </div>
-
             <button class="btn-secondary close-theme-btn" style="margin-top: 20px;">Fechar</button>
         </div>
     </div>
 
-    <!-- Modal de Dados -->
     <div class="modal-overlay" id="dice-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">Bandeja de Ossos</h2>
@@ -162,7 +156,6 @@
         </div>
     </div>
 
-    <!-- Modal Grimório -->
     <div class="modal-overlay" id="encounters-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">📜 Grimório</h2>
@@ -176,21 +169,19 @@
         </div>
     </div>
 
-    <!-- Modal Pix -->
     <div class="modal-overlay" id="pix-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">🍻 Pague uma Cerveja!</h2>
             <p class="modal-subtitle">Apoie a guilda do desenvolvedor independente!</p>
             <div class="pix-box">
                 <p style="margin-top: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Chave Mágica (Pix):</p>
-                <p class="pix-key" id="minha-chave-pix">seu-email-ou-chave-aqui@gmail.com</p>
+                <p class="pix-key" id="minha-chave-pix">siteforgeagp@gmail.com</p>
                 <button class="btn-primary" id="copy-pix-btn" style="margin-top: 15px;">📋 Copiar Feitiço</button>
             </div>
             <button class="btn-secondary close-pix-btn" style="margin-top: 20px;">Fechar Baú</button>
         </div>
     </div>
 
-    <!-- Modal Status -->
     <div class="modal-overlay" id="status-modal">
         <div class="modal-content forge-panel">
             <h2 id="status-char-name" class="modal-title">Alvo</h2>

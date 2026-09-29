@@ -24,8 +24,6 @@ const roundCounterDiv = $('round-counter');
 // === MAGIA DO MULTIVERSO (Temas) ===
 function aplicarTema(tema) {
     document.body.setAttribute('data-theme', tema);
-    
-    // Ajusta a cor da barra de status do celular
     const metaColor = $('meta-theme-color');
     if(tema === 'fantasy') metaColor.setAttribute('content', '#0d0d12');
     else if(tema === 'paranormal') metaColor.setAttribute('content', '#000000');
@@ -276,7 +274,7 @@ $('clear-btn').onclick = () => {
     }
 };
 
-// === GERENCIADOR DE MODAIS (VÁRIOS BOTÕES ABRINDO O MESMO MODAL) ===
+// === GERENCIADOR DE MODAIS ===
 const toggleModal = (id, show) => { $(id).classList[show ? 'add' : 'remove']('show'); };
 
 // Temas
