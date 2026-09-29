@@ -207,8 +207,6 @@ window.alterarHP = (id, valor) => {
         if (combatentes[index].hpAtual <= 0) combatentes[index].hpAtual = 0; else combatentes[index].status = 'ativo';
         
         lsSet('rpgCombatentesV2', combatentes);
-        
-        // A MAGIA DA REFRAÇÃO: Renderiza PRIMEIRO, depois aplica a animação na carta nova!
         renderizarCombate();
         
         const card = $(`card-${id}`);
@@ -217,8 +215,6 @@ window.alterarHP = (id, valor) => {
             card.classList.remove('damage-anim', 'heal-anim'); 
             void card.offsetWidth; 
             card.classList.add(animClass);
-            
-            // Remove a classe depois que a animação termina (500ms) pra poder brilhar de novo depois
             setTimeout(() => { if (card) card.classList.remove(animClass); }, 500);
         }
     }
@@ -322,12 +318,10 @@ window.deletarEncontro = (id) => { if(confirm("Queimar este pergaminho do grimó
 document.querySelectorAll('.open-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', true));
 document.querySelectorAll('.close-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', false));
 
-// A MAGIA DOS DADOS CORRIGIDA! (Sem quebrar a barreira do som)
 window.rolarDado = (lados) => {
     if (navigator.vibrate) navigator.vibrate(20);
     const resultSpan = $('dice-result'), detailSpan = $('dice-detail'), modVal = parseInt($('dice-mod').value) || 0;
     
-    // Tira os estilos de finalização
     resultSpan.classList.remove('dice-pop'); 
     resultSpan.classList.add('dice-rolling');
     resultSpan.style.color = 'var(--text-muted)'; 
@@ -340,7 +334,6 @@ window.rolarDado = (lados) => {
         if (rolagens > 12) {
             clearInterval(fakeRoll);
             
-            // Coloca o efeito Pop e devolve a cor padrão
             resultSpan.classList.remove('dice-rolling'); 
             void resultSpan.offsetWidth; 
             resultSpan.classList.add('dice-pop');
@@ -384,7 +377,6 @@ if(copyPixBtn) {
     };
 }
 
-// O BOTÃO DE STATUS BLINDADO!
 const statusModal = $('status-modal');
 const closeStatusBtn = $('close-status-modal'); 
 
@@ -409,7 +401,6 @@ if (closeStatusBtn) {
     closeStatusBtn.onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
 }
 
-// Magia de Instalação PWA
 let deferredPrompt;
 const installBtn = $('install-app-btn');
 if (installBtn) {
@@ -423,5 +414,4 @@ if (installBtn) {
 window.addEventListener('appinstalled', () => { if(installBtn) installBtn.style.display = 'none'; });
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(e=>e)); }
 
-// A masmorra vazia aparece logo de cara se tiver vazia!
 renderizarCombate();

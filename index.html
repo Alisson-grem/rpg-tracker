@@ -168,12 +168,17 @@
         </div>
     </div>
 
+    <!-- MODAL DO PIX COM QR CODE MAGICO DA SIPAH -->
     <div class="modal-overlay" id="pix-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">👍 Apoie a Guilda!</h2>
             <p class="modal-subtitle">Se esse app salvou a sua mesa de RPG, doe moedas de ouro para o desenvolvedor!</p>
             <div class="pix-box">
-                <p style="margin-top: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Chave Mágica (Pix):</p>
+                <p style="margin-top: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Câmera Mágica (QR Code):</p>
+                <!-- Salve a imagem do seu pix como qrcode.png na mesma pasta! -->
+                <img src="./Images/qr-code-pix.png" alt="QR Code Pix" class="pix-qrcode" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=siteforgeagp@gmail.com'">
+                
+                <p style="margin-top: 15px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Ou copie a Chave:</p>
                 <p class="pix-key" id="minha-chave-pix">siteforgeagp@gmail.com</p>
                 <button class="btn-primary" id="copy-pix-btn" style="margin-top: 15px;">📋 Copiar Feitiço</button>
             </div>

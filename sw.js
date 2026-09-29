@@ -1,10 +1,11 @@
-const CACHE_NAME = 'rpg-tracker-v19';
+const CACHE_NAME = 'rpg-tracker-v20';
 const arquivosParaSalvar = [
     './',
     './index.html',
     './style.css',
     './script.js',
-    './manifest.json'
+    './manifest.json',
+    './qrcode.png'
 ];
 
 self.addEventListener('install', evento => {
