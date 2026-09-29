@@ -24,7 +24,20 @@ body {
 .app-header { width: 100%; text-align: center; padding: 35px 20px 25px; background: linear-gradient(180deg, rgba(5,5,8,0.9) 0%, rgba(5,5,8,0) 100%); border-bottom: 1px solid rgba(255,255,255,0.02); }
 .app-header h1 { font-family: var(--font-rpg); font-size: 34px; margin: 0; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
 .app-header .subtitle { margin: 8px 0 0 0; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 4px; font-weight: 800;}
-.install-header-btn { margin-top: 15px; font-size: 14px; padding: 10px 20px; width: auto; border-radius: 30px; font-family: var(--font-ui); background: linear-gradient(180deg, #166534 0%, #14532d 100%); border: 1px solid #22c55e; animation: floatCrown 2s infinite ease-in-out; }
+
+/* A MAGIA DO BOTÃO INSTALAR CONSERTADO DA SIPAH */
+.install-header-btn { 
+    margin: 15px auto 0 auto; 
+    width: fit-content;
+    align-items: center; justify-content: center; gap: 8px;
+    font-size: 14px; padding: 10px 20px; border-radius: 30px; font-family: var(--font-ui); 
+    background: linear-gradient(180deg, #166534 0%, #14532d 100%); 
+    border: 1px solid #22c55e; color: white; font-weight: bold;
+    cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    animation: pulsePoison 2s infinite; 
+    transition: transform 0.2s;
+}
+.install-header-btn:active { transform: scale(0.95); }
 
 .app-container { width: 100%; max-width: 550px; padding: 20px; box-sizing: border-box; padding-bottom: 120px;}
 
@@ -52,8 +65,8 @@ body {
 .combat-controls h2 { margin: 0; font-size: 24px; font-family: var(--font-rpg); color: var(--gold); }
 .round-badge { background: rgba(251, 191, 36, 0.15); color: var(--gold); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(251, 191, 36, 0.4); font-size: 12px; font-weight: bold; margin-top: 5px; display: inline-block; text-transform: uppercase; letter-spacing: 1px;}
 .combat-actions { display: flex; gap: 8px; align-items: center; }
-.mini-action-btn { padding: 10px 12px; font-size: 14px; font-family: var(--font-ui); width: auto; display: flex; align-items: center; justify-content: center; font-weight: bold;}
-.btn-danger { background: rgba(153, 27, 27, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #fca5a5; padding: 10px 12px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s;}
+.mini-action-btn { padding: 10px 14px; font-size: 14px; font-family: var(--font-ui); width: auto; display: flex; align-items: center; justify-content: center; font-weight: bold;}
+.btn-danger { background: rgba(153, 27, 27, 0.1); border: 1px solid rgba(220, 38, 38, 0.3); color: #fca5a5; padding: 10px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s;}
 .btn-danger:hover { background: rgba(153, 27, 27, 0.3); }
 
 .combat-list { display: flex; flex-direction: column; gap: 20px; margin-top: 10px;}
@@ -64,6 +77,7 @@ body {
     border-left: 4px solid var(--gold); box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 0 rgba(255,255,255,0.02);
     position: relative; overflow: visible; transition: all 0.3s;
 }
+
 .char-card.fac-hero { border-left-color: #3b82f6; }
 .char-card.fac-villain { border-left-color: #ef4444; }
 .char-card.fac-neutral { border-left-color: #a1a1aa; }
@@ -94,16 +108,16 @@ body {
 .status-invisible { background: rgba(107, 33, 168, 0.15); border: 1px dashed #c084fc; color: #e9d5ff; animation: fadeGhost 3s infinite; text-shadow: 0 0 5px rgba(192, 132, 252, 0.5); }
 @keyframes fadeGhost { 0%, 100% { opacity: 0.4; box-shadow: 0 0 2px rgba(192, 132, 252, 0.2); } 50% { opacity: 1; box-shadow: 0 0 15px rgba(192, 132, 252, 0.6); } }
 
-.char-top-right { display: flex; align-items: center; gap: 8px; }
-.char-init { background: linear-gradient(180deg, #27272a 0%, #18181b 100%); padding: 6px 10px; border-radius: 8px; font-size: 13px; font-weight: bold; color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
-.action-icon-btn { background: transparent; border: none; font-size: 20px; cursor: pointer; padding: 0; transition: 0.3s; z-index: 5; filter: grayscale(1) opacity(0.7); }
+.char-top-right { display: flex; align-items: center; gap: 10px; }
+.char-init { background: linear-gradient(180deg, #27272a 0%, #18181b 100%); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: bold; color: var(--gold); border: 1px solid rgba(251, 191, 36, 0.3); box-shadow: 0 2px 5px rgba(0,0,0,0.5);}
+.action-icon-btn { background: transparent; border: none; font-size: 22px; cursor: pointer; padding: 0; transition: 0.3s; z-index: 5; filter: grayscale(1) opacity(0.7); }
 .action-icon-btn:hover { filter: grayscale(0) opacity(1); transform: scale(1.1); }
 .delete-char-btn { color: #ef4444; filter: none; opacity: 0.6; }
 .delete-char-btn:hover { opacity: 1; transform: scale(1.1); }
 
 .hp-section { display: flex; flex-direction: column; align-items: center; z-index: 1; gap: 12px; width: 100%;}
 .hp-display { font-size: 28px; font-weight: 900; letter-spacing: -1px; text-shadow: 0 2px 5px rgba(0,0,0,1);}
-.hp-btns { display: flex; justify-content: center; gap: 6px; width: 100%; flex-wrap: wrap; }
+.hp-btns { display: flex; justify-content: center; gap: 6px; width: 100%; flex-wrap: wrap;}
 .hp-btn { flex: 1; min-width: 45px; max-width: 65px; height: 42px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.8); font-size: 15px; font-weight: bold; cursor: pointer; color: white; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 4px 8px rgba(0,0,0,0.5); transition: transform 0.1s; }
 .hp-btn:active { transform: translateY(2px); box-shadow: none; }
 .btn-minus { background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); }
@@ -127,7 +141,6 @@ body {
 .badge-knockout { background: rgba(202, 138, 4, 0.2); color: #facc15; border: 1px solid #ca8a04; }
 .badge-dead { background: rgba(153, 27, 27, 0.2); color: #f87171; border: 1px solid #991b1b; }
 
-/* MODAIS E BOTÕES FLUTUANTES */
 .pix-float-btn { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(180deg, #fde68a 0%, #fbbf24 100%); color: #451a03; border: 2px solid #fffbeb; padding: 16px 28px; border-radius: 30px; font-family: var(--font-rpg); font-size: 18px; font-weight: 900; box-shadow: 0 10px 25px var(--gold-glow); cursor: pointer; z-index: 1000; transition: transform 0.2s, box-shadow 0.2s; }
 .pix-float-btn:active { transform: scale(0.95) translateY(2px); box-shadow: 0 5px 15px var(--gold-glow); }
 .dice-float-btn { position: fixed; bottom: 30px; left: 30px; background: linear-gradient(180deg, #374151 0%, #111827 100%); color: white; border: 2px solid #4b5563; padding: 16px; border-radius: 50%; font-size: 26px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); cursor: pointer; z-index: 1000; transition: 0.2s; }
@@ -140,7 +153,6 @@ body {
 .pix-box { background: rgba(0,0,0,0.6); padding: 20px; border-radius: 16px; margin: 25px 0; border: 1px dashed var(--gold); box-shadow: inset 0 0 20px rgba(251, 191, 36, 0.1);}
 .pix-key { font-family: monospace; font-size: 16px; color: var(--gold); word-break: break-all; font-weight: bold; background: #000; padding: 10px; border-radius: 8px;}
 
-/* BANDEJA DE DADOS */
 .dice-display-box { background: #09090c; border: 1px solid var(--border-dark); border-radius: 16px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 5px 15px rgba(0,0,0,0.8); position: relative; }
 #dice-result { font-family: var(--font-rpg); font-size: 60px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); transition: 0.1s; line-height: 1;}
 #dice-detail { font-size: 14px; color: var(--text-muted); font-weight: bold; margin-top: 5px; height: 16px; text-transform: uppercase; letter-spacing: 1px;}
@@ -149,7 +161,6 @@ body {
 .dice-btn:active { transform: translateY(2px); box-shadow: none; background: var(--gold); color: #000; }
 .dice-roll-anim { animation: rollShake 0.3s cubic-bezier(.36,.07,.19,.97) both; }
 
-/* GRIMÓRIO */
 .encounters-list { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; max-height: 220px; overflow-y: auto; padding-right: 5px; }
 .encounters-list::-webkit-scrollbar { width: 6px; }
 .encounters-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 4px;}
@@ -164,7 +175,6 @@ body {
 .enc-load { background: linear-gradient(180deg, #166534 0%, #14532d 100%); }
 .enc-del { background: linear-gradient(180deg, #991b1b 0%, #7f1d1d 100%); }
 
-/* MALDIÇÕES */
 .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
 .status-toggle-btn { background: rgba(0,0,0,0.6); border: 1px solid var(--border-dark); color: var(--text-main); padding: 14px 10px; border-radius: 12px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); }
 .status-toggle-btn:active { transform: scale(0.95); }
@@ -174,8 +184,7 @@ body {
 .status-toggle-btn[data-status="shield"].active { background: rgba(3, 105, 161, 0.2); border-color: #0ea5e9; color: #7dd3fc; box-shadow: 0 0 15px rgba(14, 165, 233, 0.5); }
 .status-toggle-btn[data-status="invisible"].active { background: rgba(107, 33, 168, 0.2); border-color: #c084fc; color: #e9d5ff; box-shadow: 0 0 15px rgba(192, 132, 252, 0.5); }
 
-
-/* === MAGIA DE ESPREMER (MEDIA QUERIES PARA CELULAR) === */
+/* MEDIA QUERIES (A Magia de Espremer!) */
 @media screen and (max-width: 500px) {
     .app-container { padding: 15px; padding-bottom: 100px;}
     

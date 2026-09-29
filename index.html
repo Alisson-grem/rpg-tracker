@@ -17,8 +17,8 @@
     <header class="app-header">
         <h1>🐉 Mestre do Combate</h1>
         <p class="subtitle">Gerenciador de Batalha Épica</p>
-        <!-- BOTÃO DE INSTALAR (Escondido por padrão, a magia do JS revela) -->
-        <button id="install-app-btn" class="btn-primary install-header-btn" style="display: none;">📥 Instalar Aplicativo</button>
+        <!-- BOTÃO DE INSTALAR (Consertado e Centralizado!) -->
+        <button id="install-app-btn" class="install-header-btn" style="display: none;">📥 Instalar Aplicativo</button>
     </header>
 
     <div class="app-container">
@@ -40,7 +40,6 @@
             <div class="input-row">
                 <input type="text" id="char-name" placeholder="Nome (Ex: Dragão Ancião)" class="rpg-input">
             </div>
-            <!-- Divisão que se adapta no celular -->
             <div class="input-row split responsive-split">
                 <input type="number" id="char-qtd" placeholder="Qtd" value="1" min="1" class="rpg-input" title="Quantidade">
                 <input type="number" id="char-hp" placeholder="HP Max" class="rpg-input">
@@ -68,11 +67,10 @@
 
     </div>
 
-    <!-- BOTÕES FLUTUANTES -->
     <button class="dice-float-btn" id="open-dice-modal" title="Bandeja de Ossos">🎲</button>
     <button class="pix-float-btn" id="open-pix-modal">🪙 Baú</button>
 
-    <!-- Modal do Rolador de Dados -->
+    <!-- Modal de Dados -->
     <div class="modal-overlay" id="dice-modal">
         <div class="modal-content forge-panel">
             <h2 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">Bandeja de Ossos</h2>
@@ -99,7 +97,7 @@
         </div>
     </div>
 
-    <!-- Modal do Grimório de Encontros -->
+    <!-- Modal Grimório -->
     <div class="modal-overlay" id="encounters-modal">
         <div class="modal-content forge-panel">
             <h2 style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">📜 Grimório</h2>
@@ -111,12 +109,11 @@
             </div>
 
             <div id="encounters-list" class="encounters-list"></div>
-
             <button class="btn-secondary" id="close-encounters-modal" style="margin-top: 20px;">Fechar Grimório</button>
         </div>
     </div>
 
-    <!-- Modal do Pix -->
+    <!-- Modal Pix -->
     <div class="modal-overlay" id="pix-modal">
         <div class="modal-content forge-panel">
             <h2 style="color: var(--gold); font-family: 'Cinzel', serif;">🍻 Pague uma Cerveja!</h2>
@@ -130,7 +127,7 @@
         </div>
     </div>
 
-    <!-- Modal de Status -->
+    <!-- Modal Status -->
     <div class="modal-overlay" id="status-modal">
         <div class="modal-content forge-panel">
             <h2 id="status-char-name" style="color: var(--gold); font-family: 'Cinzel', serif; margin-bottom: 5px;">Alvo</h2>

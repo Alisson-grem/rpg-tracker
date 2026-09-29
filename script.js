@@ -280,7 +280,6 @@ $('clear-btn').onclick = () => {
     }
 };
 
-// Grimório
 const encModal = $('encounters-modal');
 $('open-encounters-btn').onclick = () => { renderizarEncontros(); encModal.classList.add('show'); };$('close-encounters-modal').onclick = () => encModal.classList.remove('show');
 
@@ -327,7 +326,6 @@ window.deletarEncontro = (id) => {
     }
 };
 
-// Dados
 const diceModal = $('dice-modal');
 $('open-dice-modal').onclick = () => diceModal.classList.add('show');$('close-dice-modal').onclick = () => diceModal.classList.remove('show');
 window.rolarDado = (lados) => {
@@ -361,7 +359,6 @@ window.rolarDado = (lados) => {
     }, 40);
 };
 
-// Maldições
 const statusModal = $('status-modal');
 window.abrirStatusModal = (id) => {
     alvoStatusId = id; const char = combatentes.find(c => c.id === id); $('status-char-name').innerText = char.nome;
@@ -382,7 +379,6 @@ document.querySelectorAll('.status-toggle-btn').forEach(btn => {
 });
 $('close-status-modal').onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
 
-// Pix
 const pixModal = $('pix-modal');$('open-pix-modal').onclick = () => pixModal.classList.add('show');
 $('close-pix-modal').onclick = () => pixModal.classList.remove('show');$('copy-pix-btn').onclick = () => {
     navigator.clipboard.writeText($('minha-chave-pix').innerText).then(() => {
@@ -391,23 +387,21 @@ $('close-pix-modal').onclick = () => pixModal.classList.remove('show');$('copy-p
     });
 };
 
-// === MAGIA DE INSTALAÇÃO (PWA) ===
+// === MAGIA DE INSTALAÇÃO CONSERTADA ===
 let deferredPrompt;
 const installBtn = $('install-app-btn');
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); // Impede o navegador de mostrar o aviso feio dele
-    deferredPrompt = e; // Salva o evento pra gente usar no botão
-    installBtn.style.display = 'inline-block'; // Mostra o botão chique da Sipah!
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.style.display = 'flex'; // Usando flex para alinhar o conteúdo bonitinho!
 });
 
 installBtn.addEventListener('click', async () => {
     if (deferredPrompt) {
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            installBtn.style.display = 'none'; // Some se o humano aceitou
-        }
+        if (outcome === 'accepted') installBtn.style.display = 'none';
         deferredPrompt = null;
     }
 });
