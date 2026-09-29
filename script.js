@@ -65,7 +65,7 @@ function renderizarCombate() {
     }
 
     if (combatentes.length === 0) {
-        listaCombateDiv.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size: 16px; padding: 20px;">🕸️ A masmorra está vazia...<br>Invoque novos monstros acima.</p>';
+        listaCombateDiv.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size: 16px; padding: 40px 20px; line-height: 1.5;">🕸️ A masmorra está vazia...<br>Invoque novos monstros ou carregue uma batalha do Grimório.</p>';
         return;
     }
 
@@ -208,12 +208,19 @@ window.alterarHP = (id, valor) => {
         
         lsSet('rpgCombatentesV2', combatentes);
         
+        // A MAGIA DA REFRAÇÃO: Renderiza PRIMEIRO, depois aplica a animação na carta nova!
+        renderizarCombate();
+        
         const card = $(`card-${id}`);
         if (card && valor !== 0) {
-            card.classList.remove('damage-anim', 'heal-anim'); void card.offsetWidth; 
-            if (valor < 0) card.classList.add('damage-anim'); else card.classList.add('heal-anim');
-            setTimeout(() => renderizarCombate(), 300);
-        } else { renderizarCombate(); }
+            const animClass = valor < 0 ? 'damage-anim' : 'heal-anim';
+            card.classList.remove('damage-anim', 'heal-anim'); 
+            void card.offsetWidth; 
+            card.classList.add(animClass);
+            
+            // Remove a classe depois que a animação termina (500ms) pra poder brilhar de novo depois
+            setTimeout(() => { if (card) card.classList.remove(animClass); }, 500);
+        }
     }
 };
 
@@ -271,7 +278,7 @@ $('clear-btn').onclick = () => {
     }
 };
 
-// Modais
+// Gerenciador de Modais
 const toggleModal = (id, show) => { $(id).classList[show ? 'add' : 'remove']('show'); };
 
 document.querySelectorAll('.open-theme-btn').forEach(btn => btn.onclick = () => toggleModal('theme-modal', true));
@@ -314,21 +321,51 @@ window.deletarEncontro = (id) => { if(confirm("Queimar este pergaminho do grimó
 
 document.querySelectorAll('.open-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', true));
 document.querySelectorAll('.close-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', false));
+
+// A MAGIA DOS DADOS CORRIGIDA! (Sem quebrar a barreira do som)
 window.rolarDado = (lados) => {
     if (navigator.vibrate) navigator.vibrate(20);
     const resultSpan = $('dice-result'), detailSpan = $('dice-detail'), modVal = parseInt($('dice-mod').value) || 0;
-    resultSpan.classList.remove('dice-roll-anim'); void resultSpan.offsetWidth; resultSpan.classList.add('dice-roll-anim');
-    resultSpan.style.color = 'var(--gold)'; resultSpan.style.textShadow = '0 0 20px var(--gold-glow)';
+    
+    // Tira os estilos de finalização
+    resultSpan.classList.remove('dice-pop'); 
+    resultSpan.classList.add('dice-rolling');
+    resultSpan.style.color = 'var(--text-muted)'; 
+    resultSpan.style.textShadow = 'none';
+    
     let rolagens = 0;
     const fakeRoll = setInterval(() => {
-        resultSpan.innerText = Math.floor(Math.random() * lados) + 1; rolagens++;
-        if (rolagens > 10) {
+        resultSpan.innerText = Math.floor(Math.random() * lados) + 1; 
+        rolagens++;
+        if (rolagens > 12) {
             clearInterval(fakeRoll);
-            const dadoPuro = Math.floor(Math.random() * lados) + 1; resultSpan.innerText = dadoPuro + modVal;
-            let sinal = modVal > 0 ? '+' : ''; let textoDetalhe = `D${lados} (${dadoPuro}) ${modVal !== 0 ? sinal + modVal : ''}`;
+            
+            // Coloca o efeito Pop e devolve a cor padrão
+            resultSpan.classList.remove('dice-rolling'); 
+            void resultSpan.offsetWidth; 
+            resultSpan.classList.add('dice-pop');
+            resultSpan.style.color = 'var(--gold)'; 
+            resultSpan.style.textShadow = '0 0 20px var(--gold-glow)';
+
+            const dadoPuro = Math.floor(Math.random() * lados) + 1; 
+            resultSpan.innerText = dadoPuro + modVal;
+            let sinal = modVal > 0 ? '+' : ''; 
+            let textoDetalhe = `D${lados} (${dadoPuro}) ${modVal !== 0 ? sinal + modVal : ''}`;
+            
             if (lados === 20) {
-                if (dadoPuro === 20) { textoDetalhe += ' - CRÍTICO! 🎉'; resultSpan.style.color = 'var(--primary-glow)'; resultSpan.style.textShadow = '0 0 25px var(--primary-glow)'; soltarConfetesMagicos(); if (navigator.vibrate) navigator.vibrate([100, 50, 100]); } 
-                else if (dadoPuro === 1) { textoDetalhe += ' - FALHA CRÍTICA! 💀'; resultSpan.style.color = '#ef4444'; resultSpan.style.textShadow = '0 0 25px rgba(239, 68, 68, 0.8)'; if (navigator.vibrate) navigator.vibrate(300); }
+                if (dadoPuro === 20) { 
+                    textoDetalhe += ' - CRÍTICO! 🎉'; 
+                    resultSpan.style.color = '#4ade80'; 
+                    resultSpan.style.textShadow = '0 0 25px rgba(74, 222, 128, 0.8)'; 
+                    soltarConfetesMagicos(); 
+                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+                } 
+                else if (dadoPuro === 1) { 
+                    textoDetalhe += ' - FALHA CRÍTICA! 💀'; 
+                    resultSpan.style.color = '#ef4444'; 
+                    resultSpan.style.textShadow = '0 0 25px rgba(239, 68, 68, 0.8)'; 
+                    if (navigator.vibrate) navigator.vibrate(300); 
+                }
             }
             detailSpan.innerText = textoDetalhe;
         }
@@ -337,19 +374,26 @@ window.rolarDado = (lados) => {
 
 document.querySelectorAll('.open-pix-btn').forEach(btn => btn.onclick = () => toggleModal('pix-modal', true));
 document.querySelectorAll('.close-pix-btn').forEach(btn => btn.onclick = () => toggleModal('pix-modal', false));
-$('copy-pix-btn').onclick = () => {
-    navigator.clipboard.writeText($('minha-chave-pix').innerText).then(() => {
-        const btn = $('copy-pix-btn'); btn.innerText = "✅ Feitiço Copiado!"; btn.style.background = "var(--heal-btn-bg)";
-        setTimeout(() => { btn.innerText = "📋 Copiar Feitiço"; btn.style.background = ""; }, 2000);
-    });
-};
+const copyPixBtn = $('copy-pix-btn');
+if(copyPixBtn) {
+    copyPixBtn.onclick = () => {
+        navigator.clipboard.writeText($('minha-chave-pix').innerText).then(() => {
+            copyPixBtn.innerText = "✅ Feitiço Copiado!"; copyPixBtn.style.background = "var(--heal-btn-bg)";
+            setTimeout(() => { copyPixBtn.innerText = "📋 Copiar Feitiço"; copyPixBtn.style.background = ""; }, 2000);
+        });
+    };
+}
 
+// O BOTÃO DE STATUS BLINDADO!
 const statusModal = $('status-modal');
+const closeStatusBtn = $('close-status-modal'); 
+
 window.abrirStatusModal = (id) => {
     alvoStatusId = id; const char = combatentes.find(c => c.id === id); $('status-char-name').innerText = char.nome;
     document.querySelectorAll('.status-toggle-btn').forEach(btn => { if (char.condicoes.includes(btn.getAttribute('data-status'))) btn.classList.add('active'); else btn.classList.remove('active'); });
     statusModal.classList.add('show');
 };
+
 document.querySelectorAll('.status-toggle-btn').forEach(btn => {
     btn.onclick = () => {
         if (!alvoStatusId) return;
@@ -360,18 +404,24 @@ document.querySelectorAll('.status-toggle-btn').forEach(btn => {
         lsSet('rpgCombatentesV2', combatentes); renderizarCombate();
     };
 });
-$('close-status-modal').onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
+
+if (closeStatusBtn) {
+    closeStatusBtn.onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
+}
 
 // Magia de Instalação PWA
 let deferredPrompt;
 const installBtn = $('install-app-btn');
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex';
-});
-installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') installBtn.style.display = 'none'; deferredPrompt = null; }
-});
-window.addEventListener('appinstalled', () => { installBtn.style.display = 'none'; });
+if (installBtn) {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex';
+    });
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') installBtn.style.display = 'none'; deferredPrompt = null; }
+    });
+}
+window.addEventListener('appinstalled', () => { if(installBtn) installBtn.style.display = 'none'; });
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(e=>e)); }
 
+// A masmorra vazia aparece logo de cara se tiver vazia!
 renderizarCombate();
