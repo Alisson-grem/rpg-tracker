@@ -21,7 +21,6 @@ const magiaDict = {
 const listaCombateDiv = $('combat-list');
 const roundCounterDiv = $('round-counter');
 
-// === MAGIA DO MULTIVERSO (Temas) ===
 function aplicarTema(tema) {
     document.body.setAttribute('data-theme', tema);
     const metaColor = $('meta-theme-color');
@@ -40,7 +39,6 @@ document.querySelectorAll('.theme-select-btn').forEach(btn => {
     };
 });
 
-// Efeitos Visuais
 const soltarConfetesMagicos = () => {
     const emojis = ['✨', '🎉', '🔥', '🏆', '💎', '🌟'];
     for(let i = 0; i < 40; i++) {
@@ -53,7 +51,6 @@ const soltarConfetesMagicos = () => {
     }
 };
 
-// Renderização Principal
 function renderizarCombate() {
     listaCombateDiv.innerHTML = '';
     roundCounterDiv.innerText = `Rodada ${rodadaAtual}`;
@@ -274,14 +271,12 @@ $('clear-btn').onclick = () => {
     }
 };
 
-// === GERENCIADOR DE MODAIS ===
+// Modais
 const toggleModal = (id, show) => { $(id).classList[show ? 'add' : 'remove']('show'); };
 
-// Temas
 document.querySelectorAll('.open-theme-btn').forEach(btn => btn.onclick = () => toggleModal('theme-modal', true));
 document.querySelectorAll('.close-theme-btn').forEach(btn => btn.onclick = () => toggleModal('theme-modal', false));
 
-// Grimório
 document.querySelectorAll('.open-encounters-btn').forEach(btn => btn.onclick = () => { renderizarEncontros(); toggleModal('encounters-modal', true); });
 document.querySelectorAll('.close-encounters-btn').forEach(btn => btn.onclick = () => toggleModal('encounters-modal', false));
 
@@ -317,7 +312,6 @@ window.carregarEncontro = (id) => {
 };
 window.deletarEncontro = (id) => { if(confirm("Queimar este pergaminho do grimório para sempre?")) { encontrosSalvos = encontrosSalvos.filter(e => e.id !== id); lsSet('rpgEncontrosSalvos', encontrosSalvos); renderizarEncontros(); } };
 
-// Dados
 document.querySelectorAll('.open-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', true));
 document.querySelectorAll('.close-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', false));
 window.rolarDado = (lados) => {
@@ -341,7 +335,6 @@ window.rolarDado = (lados) => {
     }, 40);
 };
 
-// Pix
 document.querySelectorAll('.open-pix-btn').forEach(btn => btn.onclick = () => toggleModal('pix-modal', true));
 document.querySelectorAll('.close-pix-btn').forEach(btn => btn.onclick = () => toggleModal('pix-modal', false));
 $('copy-pix-btn').onclick = () => {
@@ -351,7 +344,6 @@ $('copy-pix-btn').onclick = () => {
     });
 };
 
-// Maldições
 const statusModal = $('status-modal');
 window.abrirStatusModal = (id) => {
     alvoStatusId = id; const char = combatentes.find(c => c.id === id); $('status-char-name').innerText = char.nome;
@@ -370,7 +362,7 @@ document.querySelectorAll('.status-toggle-btn').forEach(btn => {
 });
 $('close-status-modal').onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
 
-// Magia de Instalação (PWA)
+// Magia de Instalação PWA
 let deferredPrompt;
 const installBtn = $('install-app-btn');
 window.addEventListener('beforeinstallprompt', (e) => {

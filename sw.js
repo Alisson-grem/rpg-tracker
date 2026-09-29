@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rpg-tracker-v16';
+const CACHE_NAME = 'rpg-tracker-v17';
 const arquivosParaSalvar = [
     './',
     './index.html',
