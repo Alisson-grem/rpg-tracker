@@ -7,37 +7,21 @@ let rodadaAtual = lsGet('rpgRodada', 1);
 let turnoIndex = lsGet('rpgTurnoIndex', 0);
 let alvoStatusId = null; 
 let combateIniciado = lsGet('rpgCombateIniciado', false);
-let encontrosSalvos = lsGet('rpgEncontrosSalvos', []);
-let temaAtual = lsGet('rpgTema', 'fantasy');
 
 const magiaDict = {
     'poison': { icon: '🤢', name: 'Veneno', class: 'status-poison' },
     'burn': { icon: '🔥', name: 'Chamas', class: 'status-burn' },
     'stun': { icon: '⚡', name: 'Atordoado', class: 'status-stun' },
     'shield': { icon: '🛡️', name: 'Escudo', class: 'status-shield' },
-    'invisible': { icon: '👻', name: 'Invisível', class: 'status-invisible' }
+    'invisible': { icon: '👻', name: 'Invisível', class: 'status-invisible' },
+    'prone': { icon: '⬇️', name: 'Caído', class: 'status-prone' },
+    'frightened': { icon: '😱', name: 'Medo', class: 'status-frightened' },
+    'blind': { icon: '👁️‍‍🗨️', name: 'Cego', class: 'status-blind' },
+    'restrained': { icon: '🔗', name: 'Preso', class: 'status-restrained' }
 };
 
 const listaCombateDiv = $('combat-list');
 const roundCounterDiv = $('round-counter');
-
-function aplicarTema(tema) {
-    document.body.setAttribute('data-theme', tema);
-    const metaColor = $('meta-theme-color');
-    if(tema === 'fantasy') metaColor.setAttribute('content', '#0d0d12');
-    else if(tema === 'paranormal') metaColor.setAttribute('content', '#000000');
-    else if(tema === 'fallout') metaColor.setAttribute('content', '#021002');
-}
-aplicarTema(temaAtual);
-
-document.querySelectorAll('.theme-select-btn').forEach(btn => {
-    btn.onclick = () => {
-        temaAtual = btn.getAttribute('data-settheme');
-        lsSet('rpgTema', temaAtual);
-        aplicarTema(temaAtual);
-        $('theme-modal').classList.remove('show');
-    };
-});
 
 const soltarConfetesMagicos = () => {
     const emojis = ['✨', '🎉', '🔥', '🏆', '💎', '🌟'];
@@ -65,7 +49,7 @@ function renderizarCombate() {
     }
 
     if (combatentes.length === 0) {
-        listaCombateDiv.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size: 16px; padding: 40px 20px; line-height: 1.5;">🕸️ A masmorra está vazia...<br>Invoque novos monstros ou carregue uma batalha do Grimório.</p>';
+        listaCombateDiv.innerHTML = '<p style="text-align:center; color:var(--text-muted); font-size: 16px; padding: 40px 20px; line-height: 1.5;">🕸️ A masmorra está vazia...<br>Invoque novos monstros ou hordas acima.</p>';
         return;
     }
 
@@ -74,8 +58,21 @@ function renderizarCombate() {
         if (!char.faccao) char.faccao = 'neutral';
         if (!char.condicoes) char.condicoes = [];
 
-        const porcentagemVida = Math.max(0, Math.min(100, (char.hpAtual / char.hpMax) * 100));
-        
+        // A MAGIA DA HORDA (O Visual!)
+        let nomeVisual = char.nome;
+        let porcentagemVida = 0;
+
+        if (char.isHorde) {
+            let vivos = Math.ceil(char.hpAtual / char.baseHp);
+            if (vivos === 0 && char.hpAtual > 0) vivos = 1; 
+            if (vivos > 0) {
+                nomeVisual += ` <span class="horde-badge">x${vivos}</span>`;
+            }
+            porcentagemVida = Math.max(0, Math.min(100, (char.hpAtual / char.hpMax) * 100));
+        } else {
+            porcentagemVida = Math.max(0, Math.min(100, (char.hpAtual / char.hpMax) * 100));
+        }
+
         let classEstado = '';
         if (char.hpAtual <= 0 && char.status === 'ativo') classEstado = 'pending-death';
         if (char.status === 'nocaute') classEstado = 'knocked-out';
@@ -111,7 +108,7 @@ function renderizarCombate() {
         } else if (char.hpAtual <= 0 && char.status === 'ativo') {
             htmlControles = `
                 <div class="hp-section">
-                    <span style="color: var(--primary-glow); font-size: 13px; font-weight: bold; text-transform: uppercase;">⚠️ Caiu! Qual o Destino?</span>
+                    <span style="color: var(--primary-glow); font-size: 13px; font-weight: bold; text-transform: uppercase;">⚠️ ${char.isHorde ? 'A Horda Caiu!' : 'Caiu! Qual o Destino?'}</span>
                     <div class="decision-box">
                         <button class="btn-decision btn-knockout" onclick="mudarStatus('${char.id}', 'nocaute')">💤 Nocaute</button>
                         <button class="btn-decision btn-death" onclick="mudarStatus('${char.id}', 'morto')">💀 Morte</button>
@@ -131,7 +128,7 @@ function renderizarCombate() {
         } else if (char.status === 'morto') {
             htmlControles = `
                 <div class="hp-section">
-                    <div class="status-badge badge-dead">💀 Cadáver</div>
+                    <div class="status-badge badge-dead">💀 ${char.isHorde ? 'Horda Dizimada' : 'Cadáver'}</div>
                     <span class="hp-display" style="font-size: 20px;">${char.hpAtual} / ${char.hpMax} HP</span>
                     <div class="decision-box">
                         <button class="btn-decision btn-necro" onclick="alterarHP('${char.id}', 1)">🦇 Ressuscitar (+1)</button>
@@ -152,17 +149,20 @@ function renderizarCombate() {
             badgesHTML += `</div>`;
         }
 
+        let caHTML = char.ca ? `<span class="char-stat-badge" title="Classe de Armadura">🛡️<span>${char.ca}</span></span>` : '';
+
         div.innerHTML = `
             ${coroaHTML}
             <div class="hp-bar-bg" style="width: ${porcentagemVida}%"></div>
             <div class="char-top">
                 <div class="name-area">
-                    <h3 class="char-name"><span class="fac-icon">${iconeFaccao}</span> ${char.nome}</h3>
+                    <h3 class="char-name"><span class="fac-icon">${iconeFaccao}</span> ${nomeVisual}</h3>
                     ${badgesHTML}
                 </div>
                 <div class="char-top-right">
                     <button class="action-icon-btn" onclick="abrirStatusModal('${char.id}')" title="Condições">🔮</button>
-                    <span class="char-init">Inic: ${char.iniciativa}</span>
+                    ${caHTML}
+                    <span class="char-stat-badge" title="Iniciativa">⚡<span>${char.iniciativa}</span></span>
                     <button class="action-icon-btn delete-char-btn" onclick="apagarChar('${char.id}')" title="Excluir">🗑️</button>
                 </div>
             </div>
@@ -212,8 +212,7 @@ window.alterarHP = (id, valor) => {
         const card = $(`card-${id}`);
         if (card && valor !== 0) {
             const animClass = valor < 0 ? 'damage-anim' : 'heal-anim';
-            card.classList.remove('damage-anim', 'heal-anim'); 
-            void card.offsetWidth; 
+            card.classList.remove('damage-anim', 'heal-anim'); void card.offsetWidth; 
             card.classList.add(animClass);
             setTimeout(() => { if (card) card.classList.remove(animClass); }, 500);
         }
@@ -249,20 +248,32 @@ $('add-btn').onclick = () => {
     const nomeBase = $('char-name').value.trim();
     const hp = parseInt($('char-hp').value);
     const inic = parseInt($('char-init').value);
+    const caVal = parseInt($('char-ca').value) || null;
     let qtd = parseInt($('char-qtd').value) || 1;
 
-    if (!nomeBase || isNaN(hp) || isNaN(inic) || qtd < 1) { alert("Feitiço falhou! Preencha todos os campos corretamente."); return; }
+    if (!nomeBase || isNaN(hp) || isNaN(inic) || qtd < 1) { alert("Feitiço falhou! Preencha o Nome, Qtd, HP Base e Iniciativa."); return; }
 
-    for(let i = 0; i < qtd; i++) {
-        let nomeFinal = qtd > 1 ? `${nomeBase} ${i + 1}` : nomeBase;
-        let iniciativaFinal = inic;
-        if (qtd > 1) iniciativaFinal = inic + Math.floor(Math.random() * 20) + 1;
-        combatentes.push({
-            id: 'char_' + Date.now() + '_' + i, nome: nomeFinal, hpMax: hp, hpAtual: hp, iniciativa: iniciativaFinal, status: 'ativo', faccao: faccaoSelecionada, condicoes: []
-        });
-    }
+    // A MAGIA DA HORDA (Under the Hood!)
+    let isHorde = qtd > 1;
+    let hpTotal = isHorde ? hp * qtd : hp;
+
+    combatentes.push({
+        id: 'char_' + Date.now(), 
+        nome: nomeBase, 
+        hpMax: hpTotal, 
+        hpAtual: hpTotal, 
+        baseHp: hp, // Salva o HP original para fazer as contas
+        isHorde: isHorde,
+        iniciativa: inic, 
+        ca: caVal,
+        status: 'ativo', 
+        faccao: faccaoSelecionada, 
+        condicoes: []
+    });
+
     lsSet('rpgCombatentesV2', combatentes);
-    $('char-name').value = ''; $('char-hp').value = '';$('char-init').value = ''; $('char-qtd').value = '1';$('char-name').focus();
+    
+    $('char-name').value = '';$('char-hp').value = ''; $('char-init').value = '';$('char-qtd').value = '1'; $('char-ca').value = '';$('char-name').focus();
     renderizarCombate();
 };
 
@@ -274,95 +285,46 @@ $('clear-btn').onclick = () => {
     }
 };
 
-// Gerenciador de Modais
 const toggleModal = (id, show) => { $(id).classList[show ? 'add' : 'remove']('show'); };
-
-document.querySelectorAll('.open-theme-btn').forEach(btn => btn.onclick = () => toggleModal('theme-modal', true));
-document.querySelectorAll('.close-theme-btn').forEach(btn => btn.onclick = () => toggleModal('theme-modal', false));
-
-document.querySelectorAll('.open-encounters-btn').forEach(btn => btn.onclick = () => { renderizarEncontros(); toggleModal('encounters-modal', true); });
-document.querySelectorAll('.close-encounters-btn').forEach(btn => btn.onclick = () => toggleModal('encounters-modal', false));
-
-function renderizarEncontros() {
-    const div = $('encounters-list'); div.innerHTML = '';
-    if(encontrosSalvos.length === 0) { div.innerHTML = '<p style="color: var(--text-muted); font-size: 14px;">O grimório está vazio. Salve uma batalha primeiro!</p>'; return; }
-    encontrosSalvos.forEach(enc => {
-        const item = document.createElement('div'); item.className = 'encounter-item';
-        item.innerHTML = `
-            <div class="encounter-info"><span class="encounter-name">${enc.nome}</span><span class="encounter-count">${enc.combatentes.length} combatentes</span></div>
-            <div class="encounter-actions">
-                <button class="enc-btn enc-load" onclick="carregarEncontro('${enc.id}')" title="Carregar">▶</button>
-                <button class="enc-btn enc-del" onclick="deletarEncontro('${enc.id}')" title="Apagar">🗑️</button>
-            </div>`;
-        div.appendChild(item);
-    });
-}
-$('save-encounter-btn').onclick = () => {
-    const nome = $('encounter-name').value.trim();
-    if(!nome) return alert('Dê um nome para a batalha!');
-    if(combatentes.length === 0) return alert('A mesa está vazia! Convoque criaturas antes de salvar.');
-    encontrosSalvos.push({ id: 'enc_' + Date.now(), nome: nome, combatentes: JSON.parse(JSON.stringify(combatentes)) });
-    lsSet('rpgEncontrosSalvos', encontrosSalvos); $('encounter-name').value = ''; renderizarEncontros();
-};
-window.carregarEncontro = (id) => {
-    if(!confirm("Carregar esse encontro vai substituir a batalha atual da tela! Deseja invocar?")) return;
-    const enc = encontrosSalvos.find(e => e.id === id);
-    if(enc) {
-        combatentes = JSON.parse(JSON.stringify(enc.combatentes)); rodadaAtual = 1; turnoIndex = 0; combateIniciado = false;
-        lsSet('rpgCombatentesV2', combatentes); lsSet('rpgRodada', rodadaAtual); lsSet('rpgTurnoIndex', turnoIndex); lsSet('rpgCombateIniciado', false);
-        toggleModal('encounters-modal', false); renderizarCombate();
-    }
-};
-window.deletarEncontro = (id) => { if(confirm("Queimar este pergaminho do grimório para sempre?")) { encontrosSalvos = encontrosSalvos.filter(e => e.id !== id); lsSet('rpgEncontrosSalvos', encontrosSalvos); renderizarEncontros(); } };
 
 document.querySelectorAll('.open-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', true));
 document.querySelectorAll('.close-dice-btn').forEach(btn => btn.onclick = () => toggleModal('dice-modal', false));
 
 window.rolarDado = (lados) => {
     if (navigator.vibrate) navigator.vibrate(20);
-    const resultSpan = $('dice-result'), detailSpan = $('dice-detail'), modVal = parseInt($('dice-mod').value) || 0;
+    const resultSpan = $('dice-result'), detailSpan =$('dice-detail');
+    const modVal = parseInt($('dice-mod').value) || 0;
     
-    resultSpan.classList.remove('dice-pop'); 
-    resultSpan.classList.add('dice-rolling');
-    resultSpan.style.color = 'var(--text-muted)'; 
-    resultSpan.style.textShadow = 'none';
-    
-    let rolagens = 0;
-    const fakeRoll = setInterval(() => {
-        resultSpan.innerText = Math.floor(Math.random() * lados) + 1; 
-        rolagens++;
-        if (rolagens > 12) {
-            clearInterval(fakeRoll);
-            
-            resultSpan.classList.remove('dice-rolling'); 
-            void resultSpan.offsetWidth; 
-            resultSpan.classList.add('dice-pop');
-            resultSpan.style.color = 'var(--gold)'; 
-            resultSpan.style.textShadow = '0 0 20px var(--gold-glow)';
+    const dadoPuro = Math.floor(Math.random() * lados) + 1; 
+    const resultadoFinal = dadoPuro + modVal;
 
-            const dadoPuro = Math.floor(Math.random() * lados) + 1; 
-            resultSpan.innerText = dadoPuro + modVal;
-            let sinal = modVal > 0 ? '+' : ''; 
-            let textoDetalhe = `D${lados} (${dadoPuro}) ${modVal !== 0 ? sinal + modVal : ''}`;
+    resultSpan.classList.remove('dice-flash'); 
+    void resultSpan.offsetWidth; 
+    resultSpan.classList.add('dice-flash');
+
+    resultSpan.innerText = resultadoFinal;
+    resultSpan.style.color = 'var(--gold)'; 
+    resultSpan.style.textShadow = '0 0 20px var(--gold-glow)';
+
+    let sinal = modVal > 0 ? '+' : ''; 
+    let textoDetalhe = `D${lados} (${dadoPuro}) ${modVal !== 0 ? sinal + modVal : ''}`;
             
-            if (lados === 20) {
-                if (dadoPuro === 20) { 
-                    textoDetalhe += ' - CRÍTICO! 🎉'; 
-                    resultSpan.style.color = '#4ade80'; 
-                    resultSpan.style.textShadow = '0 0 25px rgba(74, 222, 128, 0.8)'; 
-                    soltarConfetesMagicos(); 
-                    if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
-                } 
-                else if (dadoPuro === 1) { 
-                    textoDetalhe += ' - FALHA CRÍTICA! 💀'; 
-                    resultSpan.style.color = '#ef4444'; 
-                    resultSpan.style.textShadow = '0 0 25px rgba(239, 68, 68, 0.8)'; 
-                    if (navigator.vibrate) navigator.vibrate(300); 
-                }
-            }
-            detailSpan.innerText = textoDetalhe;
+    if (lados === 20) {
+        if (resultadoFinal >= 20) { 
+            textoDetalhe += ' - CRÍTICO! 🎉'; 
+            resultSpan.style.color = '#4ade80'; 
+            resultSpan.style.textShadow = '0 0 25px rgba(74, 222, 128, 0.8)'; 
+            soltarConfetesMagicos(); 
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+        } 
+        else if (resultadoFinal <= 1) { 
+            textoDetalhe += ' - FALHA CRÍTICA! 💀'; 
+            resultSpan.style.color = '#ef4444'; 
+            resultSpan.style.textShadow = '0 0 25px rgba(239, 68, 68, 0.8)'; 
+            if (navigator.vibrate) navigator.vibrate(300); 
         }
-    }, 40);
+    }
+    detailSpan.innerText = textoDetalhe;
 };
 
 document.querySelectorAll('.open-pix-btn').forEach(btn => btn.onclick = () => toggleModal('pix-modal', true));
@@ -397,19 +359,13 @@ document.querySelectorAll('.status-toggle-btn').forEach(btn => {
     };
 });
 
-if (closeStatusBtn) {
-    closeStatusBtn.onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; };
-}
+if (closeStatusBtn) { closeStatusBtn.onclick = () => { statusModal.classList.remove('show'); alvoStatusId = null; }; }
 
 let deferredPrompt;
 const installBtn = $('install-app-btn');
 if (installBtn) {
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex';
-    });
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') installBtn.style.display = 'none'; deferredPrompt = null; }
-    });
+    window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'flex'; });
+    installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') installBtn.style.display = 'none'; deferredPrompt = null; } });
 }
 window.addEventListener('appinstalled', () => { if(installBtn) installBtn.style.display = 'none'; });
 if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(e=>e)); }

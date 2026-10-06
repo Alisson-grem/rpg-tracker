@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0d0d12" id="meta-theme-color">
+    <meta name="theme-color" content="#0d0d12">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Mestre do Combate - RPG</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="fantasy">
+<body>
     <div class="ambient-light light-red"></div>
     <div class="ambient-light light-gold"></div>
-    <div class="crt-scanlines"></div> 
 
     <!-- HEADER PC -->
     <header class="desktop-header forge-panel">
@@ -21,9 +20,7 @@
             <h1>🐉 Mestre do Combate</h1>
         </div>
         <div class="header-nav">
-            <button class="nav-btn open-encounters-btn" title="Grimório">📜 <span>Batalhas</span></button>
             <button class="nav-btn open-dice-btn" title="Dados">🎲 <span>Rolar</span></button>
-            <button class="nav-btn open-theme-btn" title="Temas">🎨 <span>Tema</span></button>
             <button class="nav-btn open-pix-btn" title="Apoiar">👍 <span>Apoiar</span></button>
         </div>
     </header>
@@ -37,7 +34,7 @@
     <div class="app-container">
         
         <div class="forge-panel">
-            <h3>Convocar Combatente</h3>
+            <h3>Convocar Criatura ou Horda</h3>
             
             <div class="faction-selector">
                 <input type="radio" name="faction" id="fac-hero" value="hero">
@@ -51,14 +48,17 @@
             </div>
 
             <div class="input-row">
-                <input type="text" id="char-name" placeholder="Nome (Ex: Dragão / Zumbi / Mutante)" class="rpg-input">
+                <input type="text" id="char-name" placeholder="Nome (Ex: Orc / Bando de Goblins)" class="rpg-input">
             </div>
+            
             <div class="input-row split responsive-split">
-                <input type="number" id="char-qtd" placeholder="Qtd" value="1" min="1" class="rpg-input" title="Quantidade">
-                <input type="number" id="char-hp" placeholder="HP Max" class="rpg-input">
-                <input type="number" id="char-init" placeholder="Inic/Mod" class="rpg-input" title="Iniciativa (Ou Bônus)">
+                <input type="number" id="char-qtd" placeholder="Qtd" value="1" min="1" class="rpg-input stat-box" title="Quantidade (Cria uma Horda se > 1)">
+                <input type="number" id="char-hp" placeholder="HP Base" class="rpg-input stat-box" title="Pontos de Vida por Criatura">
+                <input type="number" id="char-ca" placeholder="CA" class="rpg-input stat-box" title="Classe de Armadura">
+                <input type="number" id="char-init" placeholder="Inic" class="rpg-input stat-box" title="Iniciativa do Grupo">
             </div>
-            <button id="add-btn" class="btn-primary">⚔️ Iniciar Batalha</button>
+
+            <button id="add-btn" class="btn-primary">⚔️ Para a Batalha</button>
         </div>
 
         <div class="combat-controls">
@@ -74,24 +74,16 @@
         </div>
 
         <div id="combat-list" class="combat-list">
-            <!-- Os personagens entram aqui via JavaScript -->
+            <!-- As cartas forjadas entram aqui -->
         </div>
 
     </div>
 
     <!-- FOOTER MOBILE -->
     <footer class="mobile-footer">
-        <button class="nav-btn-mobile open-encounters-btn">
-            <span class="icon">📜</span>
-            <span class="label">Batalhas</span>
-        </button>
         <button class="nav-btn-mobile open-dice-btn">
             <span class="icon">🎲</span>
             <span class="label">Dados</span>
-        </button>
-        <button class="nav-btn-mobile open-theme-btn">
-            <span class="icon">🎨</span>
-            <span class="label">Temas</span>
         </button>
         <button class="nav-btn-mobile open-pix-btn">
             <span class="icon">👍</span>
@@ -101,47 +93,15 @@
 
     <!-- ================= MODAIS DA SIPAH ================= -->
 
-    <div class="modal-overlay" id="theme-modal">
-        <div class="modal-content forge-panel">
-            <h2 class="modal-title">🎨 Multiverso RPG</h2>
-            <p class="modal-subtitle">Escolha o estilo da sua campanha.</p>
-            
-            <div class="theme-list">
-                <button class="theme-select-btn" data-settheme="fantasy">
-                    <span class="theme-icon">🐉</span>
-                    <div class="theme-info">
-                        <strong>Masmorra Clássica</strong>
-                        <span>Ouro, sangue e fantasia medieval (D&D)</span>
-                    </div>
-                </button>
-                <button class="theme-select-btn" data-settheme="paranormal">
-                    <span class="theme-icon">👁️</span>
-                    <div class="theme-info">
-                        <strong>Ocultismo Investigativo</strong>
-                        <span>Preto, branco e terror (Ordem Paranormal)</span>
-                    </div>
-                </button>
-                <button class="theme-select-btn" data-settheme="fallout">
-                    <span class="theme-icon">☢️</span>
-                    <div class="theme-info">
-                        <strong>Terminal Apocalíptico</strong>
-                        <span>Verde neon radioativo (Fallout / Cyberpunk)</span>
-                    </div>
-                </button>
-            </div>
-            <button class="btn-secondary close-theme-btn" style="margin-top: 20px;">Fechar</button>
-        </div>
-    </div>
-
     <div class="modal-overlay" id="dice-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">Bandeja de Ossos</h2>
             <div class="dice-display-box">
                 <span id="dice-result">--</span>
-                <span id="dice-detail">Role seu destino...</span>
+                <span id="dice-detail">Rápido e mortal...</span>
             </div>
             <div class="input-row">
-                <input type="number" id="dice-mod" placeholder="Modificador (Ex: +2)" class="rpg-input" style="text-align: center; font-weight: bold;">
+                <input type="number" id="dice-mod" placeholder="Modificador (Ex: +2 ou -1)" class="rpg-input" style="text-align: center; font-weight: bold;">
             </div>
             <div class="dice-grid">
                 <button class="dice-btn" onclick="rolarDado(4)">D4</button>
@@ -155,30 +115,13 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="encounters-modal">
-        <div class="modal-content forge-panel">
-            <h2 class="modal-title">📜 Grimório</h2>
-            <p class="modal-subtitle">Salve o campo atual ou invoque emboscadas.</p>
-            <div class="input-row split" style="margin-top: 15px;">
-                <input type="text" id="encounter-name" placeholder="Nome da Batalha" class="rpg-input" style="font-size: 14px;">
-                <button class="btn-primary" id="save-encounter-btn" style="max-width: 90px; padding: 10px; font-size: 14px;">💾 Salvar</button>
-            </div>
-            <div id="encounters-list" class="encounters-list"></div>
-            <button class="btn-secondary close-encounters-btn" style="margin-top: 20px;">Fechar</button>
-        </div>
-    </div>
-
-    <!-- MODAL DO PIX (QR CODE À PROVA DE FALHAS DA SIPAH) -->
     <div class="modal-overlay" id="pix-modal">
         <div class="modal-content forge-panel">
             <h2 class="modal-title">👍 Apoie a Guilda!</h2>
             <p class="modal-subtitle">Se esse app salvou a sua mesa de RPG, doe moedas de ouro para o desenvolvedor!</p>
             <div class="pix-box">
                 <p style="margin-top: 0; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Câmera Mágica (QR Code):</p>
-                
-                <!-- FEITIÇO BLINDADO: Tenta puxar qrcode.png. Se falhar, nullifica o erro e puxa da internet. -->
-                <img src="/Images/qr-code-pix.png" alt="QR Code Pix" class="pix-qrcode" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=siteforgeagp@gmail.com'">
-                
+                <img src="qrcode.png" alt="QR Code Pix" class="pix-qrcode" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=siteforgeagp@gmail.com'">
                 <p style="margin-top: 15px; font-size: 14px; text-transform: uppercase; color: var(--text-muted);">Ou copie a Chave:</p>
                 <p class="pix-key" id="minha-chave-pix">siteforgeagp@gmail.com</p>
                 <button class="btn-primary" id="copy-pix-btn" style="margin-top: 15px;">📋 Copiar Feitiço</button>
@@ -197,6 +140,10 @@
                 <button class="status-toggle-btn" data-status="stun">⚡ Atordoado</button>
                 <button class="status-toggle-btn" data-status="shield">🛡️ Escudo</button>
                 <button class="status-toggle-btn" data-status="invisible">👻 Invisível</button>
+                <button class="status-toggle-btn" data-status="prone">⬇️ Caído</button>
+                <button class="status-toggle-btn" data-status="frightened">😱 Medo</button>
+                <button class="status-toggle-btn" data-status="blind">👁️‍🗨️ Cego</button>
+                <button class="status-toggle-btn" data-status="restrained">🔗 Preso</button>
             </div>
             <button class="btn-primary" id="close-status-modal" style="margin-top: 20px;">Concluído</button>
         </div>
